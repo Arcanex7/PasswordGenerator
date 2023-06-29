@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Password Generator </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Password Generator</h2>
+        <div class="pass">
+            <span id="result"></span>
+            <button class="btn" id="clipboard"><i class='bx bx-copy-alt'></i></button>
+            </div>
+            <div class="settings">
+                <div class="setting">
+                <label">Password Strength </label>
+                <input type="number" id="length" min="8" max="20" value="8">
+            </div>
+            <div class="setting">
+                <label>Uppercase Letter</label>
+                <input type="checkbox" id="uppercase" checked>
+            </div>
+            <div class="setting">
+                <label>Lowercase Letter</label>
+                <input type="checkbox" id="lowercase" checked>
+            </div>
+            <div class="setting">
+                <label>Numbers</label>
+                <input type="checkbox" id="Numbers" checked>
+            </div>
+            <div class="setting">
+                <label>Symbols</label>
+                <input type="checkbox" id="Symbols" checked>
+            </div>
+        </div>
+        <button class="btn btn-large" id="generate">Generate Password</button>
+    </div>
+    
+</body>
+<script>
+    const generateBtn = document.getElementById("generate");
+    const clipboardBtn = document.getElementById("clipboard");
+    const resultSpan = document.getElementById("result");
+    const lengthInput = document.getElementById("length");
+    const uppercaseInput = document.getElementById("uppercase");
+    const lowercaseInput = document.getElementById("lowercase");
+    const numbersInput = document.getElementById("Numbers");
+    const symbolsInput = document.getElementById("Symbols");
+
+    // Function to generate a random password
+    function generatePassword() {
+        const length = lengthInput.value;
+        const useUppercase = uppercaseInput.checked;
+        const useLowercase = lowercaseInput.checked;
+        const useNumbers = numbersInput.checked;
+        const useSymbols = symbolsInput.checked;
+
+        // Define character sets
+        const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+        const numberChars = "0123456789";
+        const symbolChars = "!@#$%^&*()-=_+[]{}|;:,.<>?";
+
+        let chars = "";
+
+        if (useUppercase) {
+            chars += uppercaseChars;
+        }
+        if (useLowercase) {
+            chars += lowercaseChars;
+        }
+        if (useNumbers) {
+            chars += numberChars;
+        }
+        if (useSymbols) {
+            chars += symbolChars;
+        }
+
+        let password = "";
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * chars.length);
+            password += chars.charAt(randomIndex);
+        }
+
+        return password;
+    }
+
+    // Event listener for the generate password button
+    generateBtn.addEventListener("click", function () {
+        const password = generatePassword();
+        resultSpan.textContent = password;
+    });
+
+    // Event listener for the clipboard button
+    clipboardBtn.addEventListener("click", function () {
+        const password = resultSpan.textContent;
+        if (password) {
+            navigator.clipboard.writeText(password).then(function () {
+                alert("Password copied to clipboard!");
+            });
+        }
+    });
+</script>
+
+</html>
